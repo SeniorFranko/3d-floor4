@@ -1,0 +1,32 @@
+{
+    "name": "3d floor4",
+    "description": "",
+    "dependencies": {
+        "device": "*"
+    },
+    "files": [
+        "main.blocks",
+        "main.ts",
+        "README.md",
+        "assets.json",
+        "_animation.ts",
+        "_render_blocks.ts",
+        "_render_raycasting.ts",
+        "tilemap.g.jres",
+        "tilemap.g.ts",
+        "fx14.ts",
+        "images.g.jres",
+        "images.g.ts"
+    ],
+    "testFiles": [
+        "test.ts"
+    ],
+    "targetVersions": {
+        "target": "1.10.36",
+        "targetId": "arcade"
+    },
+    "supportedTargets": [
+        "arcade"
+    ],
+    "preferredEditor": "tsprj"
+}
