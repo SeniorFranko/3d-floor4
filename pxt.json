@@ -14,9 +14,9 @@
         "_render_raycasting.ts",
         "tilemap.g.jres",
         "tilemap.g.ts",
-        "fx14.ts",
         "images.g.jres",
-        "images.g.ts"
+        "images.g.ts",
+        "Xhelpers.ts"
     ],
     "testFiles": [
         "test.ts"

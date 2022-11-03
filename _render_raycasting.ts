@@ -12,11 +12,11 @@ enum ViewMode {
 
 enum WallsType {
     //% block="Fast"
-    blitRow,
+    blitRow = 0,
     //% block="Precise"
-    blitRowBreak,
+    blitRowBreak =1,
     //% block="Precise Trans"
-    blitRowBreakTrans,
+    blitRowBreakTrans =2,
 }
 
 namespace Render {
@@ -80,7 +80,6 @@ namespace Render {
 
         textures: Image[]
         protected oldRender: scene.Renderable
-        protected myRender: scene.Renderable
 
         //render
         protected wallHeightInView: number
@@ -117,29 +116,13 @@ namespace Render {
         onSpriteDirectionUpdateHandler: (spr: Sprite, dir: number) => void
 
         get xFpx(): number { return Fx.add(this.sprSelf._x, Fx.div(this.sprSelf._width, Fx.twoFx8)) as any as number / this.tilemapScaleSize }
-
-        // set xFpx(v: number) {
-        //     this.sprSelf._x = v * this.tilemapScaleSize as any as Fx8
-        // }
-
         get yFpx(): number { return Fx.add(this.sprSelf._y, Fx.div(this.sprSelf._height, Fx.twoFx8)) as any as number / this.tilemapScaleSize }
-
-        // set yFpx(v: number) {
-        //     this.sprSelf._y = v * this.tilemapScaleSize as any as Fx8
-        // }
-
         get dirX(): number { return this.dirXFpx / fpx_scale        }
-
         get dirY(): number { return this.dirYFpx / fpx_scale       }
-
         set dirX(v: number) { this.dirXFpx = v * fpx_scale  }
-
         set dirY(v: number) { this.dirYFpx = v * fpx_scale  }
-
         sprXFx8(spr: Sprite) {  return Fx.add(spr._x, Fx.div(spr._width, Fx.twoFx8)) as any as number / this.tilemapScaleSize }
-
         sprYFx8(spr: Sprite) {  return Fx.add(spr._y, Fx.div(spr._height, Fx.twoFx8)) as any as number / this.tilemapScaleSize}
-
         get fov(): number { return this._fov    }
 
         set fov(fov: number) {
@@ -231,8 +214,6 @@ namespace Render {
 
         set viewMode(v: ViewMode) { this._viewMode = v   }
 
-
-
         takeoverSceneSprites() {
             const sc_allSprites = game.currentScene().allSprites
             for (let i = 0; i < sc_allSprites.length;) {
@@ -322,13 +303,8 @@ namespace Render {
                 sc.eventContext.unregisterFrameHandler(frameCallback_draw)
             })
 
-            // this.myRender = scene.createRenderable(
-            //     scene.TILE_MAP_Z,
-            //     (t, c) => this.trace(t, c)
-            // )
-
-            //FLOOR  / convert tilemap to 
-            const floorW = (this.map.width - 2) * this.tilemapScaleSize
+            //FLOOR  / convert tilemap to image
+            const floorW = (this.map.width - 2) * this.tilemapScaleSize   //skip borders
             const floorH = (this.map.height - 2) * this.tilemapScaleSize
             this.floorImage = image.create(floorW, floorH)
             for (let x = 0; x < this.map.width - 2; x++)
@@ -338,7 +314,7 @@ namespace Render {
                     this.floorImage.drawTransparentImage(floorTex, x * this.tilemapScaleSize, y * this.tilemapScaleSize)
                 }
              
-           // tilemapToImg.generateImage(this.map, this.floorImage)
+
 
         }
 
@@ -476,16 +452,15 @@ namespace Render {
 
         }
 
-
         blitRowBreak(screenX: number, screenUp: number, screenDown: number, source: Image, sourceX: number, sourceYBreak: number) {
 
-            let stepY = (sourceYBreak) / (SHHalf - screenUp )
+            let stepY = (sourceYBreak) / (SHHalf - screenUp)
             let sourceY = sourceYBreak - stepY
-            let y = SHHalf -1
+            let y = SHHalf - 1
             if (screenUp < 0)
                 screenUp = 0
-            while (y  >= Math.ceil(screenUp)-1) {
-                if (sourceY < 0) 
+            while (y >= Math.ceil(screenUp) - 1) {
+                if (sourceY < 0)
                     sourceY = 0
                 const c = source.getPixel(sourceX, sourceY)
                 this.tempScreen.setPixel(screenX, y, c)
@@ -494,7 +469,7 @@ namespace Render {
             }
             // from screen half  going down
             stepY = (source.height - sourceYBreak) / (screenDown - SHHalf)
-            sourceY = sourceYBreak 
+            sourceY = sourceYBreak
             y = SHHalf
             if (screenDown > SH)
                 screenDown = SH
@@ -506,6 +481,7 @@ namespace Render {
             }
 
         }
+
         
         render() {
 
@@ -840,6 +816,6 @@ namespace Render {
     }
 
     //%fixedinstance
-    export const raycastingRender = new Render.RayCastingRender()
+   export const raycastingRender = new Render.RayCastingRender()
 }
 
